@@ -1,0 +1,34 @@
+version: "2"
+services:
+  influxdb:
+    container_name: influxdb
+    image: influxdb:latest
+    ports:
+      - "8086:8086"
+    volumes:
+      - /home/ubuntu/telegraf-influxdb-grafana/influxdb:/var/lib/influxdb2
+      - /home/ubuntu/telegraf-influxdb-grafana/config:/etc/influxdb
+    restart: always
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - /home/ubuntu/telegraf-influxdb-grafana/grafana:/var/lib/grafana     
+      - /home/ubuntu/telegraf-influxdb-grafana/grafana.ini:/etc/grafana/grafana.ini
+      - /home/ubuntu/telegraf-influxdb-grafana/ssl/certs:/etc/ssl/certs
+    links:
+      - influxdb
+    user: 472:472
+    restart: always
+      
+  telegraf:
+    container_name: telegraf
+    image: telegraf:latest
+    network_mode: "host"
+    volumes:
+      -  /home/ubuntu/telegraf-influxdb-grafana/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always

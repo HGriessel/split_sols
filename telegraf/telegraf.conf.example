@@ -1,0 +1,95 @@
+[agent]
+  interval = "5s"
+  collection_jitter = "30s"
+
+[[inputs.net_response]]
+  ## Protocol, must be "tcp" or "udp"
+  ## NOTE: because the "udp" protocol does not respond to requests, it requires
+  ## a send/expect string pair (see below).
+  protocol = "tcp"
+  ## Server address (default localhost)
+  address = "grafana.thebigbytefive.africa:8086"
+
+[[inputs.net_response]]
+  ## Protocol, must be "tcp" or "udp"
+  ## NOTE: because the "udp" protocol does not respond to requests, it requires
+  ## a send/expect string pair (see below).
+  protocol = "tcp"
+  ## Server address (default localhost)
+  address = "localhost:8086"
+
+[[inputs.net_response]]
+  ## Protocol, must be "tcp" or "udp"
+  ## NOTE: because the "udp" protocol does not respond to requests, it requires
+  ## a send/expect string pair (see below).
+  protocol = "tcp"
+  ## Server address (default localhost)
+  address = "grafana.thebigbytefive.africa:80"
+
+[[inputs.net_response]]  
+  protocol = "udp" 
+  address = "localhost:161"
+  send = "Test Message"
+  expect =  "Hello, client!"
+
+[[inputs.dns_query]]
+  ## servers to query
+  servers = ["8.8.8.8","1.1.1.1"]
+
+  ## Network is the network protocol name.
+  # network = "udp"
+
+  ## Domains or subdomains to query.
+  domains = ["google.com","afrihost.co.za","faked.ll","www.goneo.de"]
+
+  ## Query record type.
+  ## Posible values: A, AAAA, CNAME, MX, NS, PTR, TXT, SOA, SPF, SRV.
+  # record_type = "A, AAAA , CNAME, NS"
+
+  ## Dns server port.
+  # port = 53
+
+  ## Query timeout in seconds.
+  # timeout = 2
+
+[[inputs.ping]]
+  name_suffix = "_host"
+  ## List of urls to ping
+  urls = ["8.8.8.8","1.1.1.1","afrihost.co.za","10.10.19.12","www.goneo.de","www.fnb.co.za","www.gov.pl","www.jse.co.za","www.france.fr"]
+
+  ## Number of pings to send per collection (ping -c <COUNT>)
+  count = 5
+
+  ## Interval, in s, at which to ping. 0 == default (ping -i <PING_INTERVAL>)
+  ## Not available in Windows.
+  # ping_interval = 1.0
+
+  ## Per-ping timeout, in s. 0 == no timeout (ping -W <TIMEOUT>)
+  timeout = 1.0
+
+  ## Total-ping deadline, in s. 0 == no deadline (ping -w <DEADLINE>)
+  deadline = 10
+
+  ## Interface or source address to send ping from (ping -I <INTERFACE/SRC_ADDR>)
+  ## on Darwin and Freebsd only source address possible: (ping -S <SRC_ADDR>)
+  # interface = "inet"
+  interface = "139.84.226.151"
+
+  ## Specify the ping executable binary, default is "ping"
+  # binary = "ping"
+
+  ## Arguments for ping command
+  ## when arguments is not empty, other options (ping_interval, timeout, etc) will be ignored
+  # arguments = ["-c", "3"]
+
+[[inputs.cpu]]
+  name_suffix = "_host"
+[[inputs.mem]]
+  name_suffix = "_host"
+[[outputs.file]]
+  files = ["stdout"]
+[[outputs.influxdb_v2]]
+  urls = ["http://127.0.0.1:8086"]
+  token = "<token>"
+  organization = "<organization>"
+  bucket = "<bucket>"

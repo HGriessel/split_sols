@@ -1,0 +1,12 @@
+[Unit]
+Description=My Server
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/ubuntu/telegraf-influxdb-grafana/rtt_collector/udp_listener.py
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=myserver_udp_listener
+
+[Install]
+WantedBy=multi-user.target
