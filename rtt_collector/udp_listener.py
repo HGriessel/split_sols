@@ -1,5 +1,6 @@
 import socket
-
+import time
+import random
 # Create a UDP socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -15,7 +16,8 @@ while True:
     # Process the received packet
     print('Received packet from:', address)
     print('Data:', data.decode())
-
+    
+    time.sleep(random.uniform(0.3, 1))
     # Generate the response string
     response = 'Hello, client!'
 

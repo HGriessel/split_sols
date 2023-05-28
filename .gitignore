@@ -2,3 +2,5 @@ venv/
 .env
 telegraf.conf
 secrtet
+chronograf_data/
+influxdb
