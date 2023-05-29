@@ -1,5 +1,4 @@
-# TIG Stack
+# TODO
 
-* Telegraf 1.3.3
-* Influxdb 1.0.2
-* Grafana 4.3.2
+1. Complete README.md
+1. Document Setup Process

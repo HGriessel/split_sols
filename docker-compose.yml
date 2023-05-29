@@ -1,43 +1,67 @@
 version: "2"
 services:
   influxdb:
+    env_file:
+      - .env
     container_name: influxdb
     image: influxdb:latest
     ports:
       - "8086:8086"
     volumes:
-      - /home/ubuntu/telegraf-influxdb-grafana/influxdb:/var/lib/influxdb2
-      - /home/ubuntu/telegraf-influxdb-grafana/config:/etc/influxdb
+      - ./influxdb:/var/lib/influxdb2
+      - ./config:/etc/influxdb
+    environment:
+        - DOCKER_INFLUXDB_INIT_MODE
+        - DOCKER_INFLUXDB_INIT_USERNAME
+        - DOCKER_INFLUXDB_INIT_PASSWORD
+        - DOCKER_INFLUXDB_INIT_ORG
+        - DOCKER_INFLUXDB_INIT_BUCKET
+        - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
+
+
     restart: always
 
   grafana:
+    env_file:
+      - .env
     container_name: grafana
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
     volumes:
-      - /home/ubuntu/telegraf-influxdb-grafana/grafana:/var/lib/grafana     
-      - /home/ubuntu/telegraf-influxdb-grafana/grafana.ini:/etc/grafana/grafana.ini
-      - /home/ubuntu/telegraf-influxdb-grafana/ssl/certs:/etc/ssl/certs
+      - ./grafana:/var/lib/grafana    
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./ssl/certs:/etc/ssl/certs
     links:
       - influxdb
     user: 472:472
     restart: always
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD
+      - GF_SERVER_DOMAIN
+      - GF_SERVER_ROOT_URL
       
   telegraf:
+    env_file:
+      - .env
     container_name: telegraf
     image: telegraf:latest
     network_mode: "host"
     volumes:
-      -  /home/ubuntu/telegraf-influxdb-grafana/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+      -  ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
+    environment:
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
+      - DOCKER_INFLUXDB_INIT_USERNAME
+      - DOCKER_INFLUXDB_INIT_ORG
+      - DOCKER_INFLUXDB_INIT_BUCKET
       
   chronograf:
     container_name: chronograf
     image: chronograf:latest
     volumes:
-      - /home/ubuntu/telegraf-influxdb-grafana/chronograf_data:/var/lib/chronograf
+      - ./chronograf_data:/var/lib/chronograf
     ports:
       - 8888:8888
     links:

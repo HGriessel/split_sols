@@ -1,6 +1,7 @@
 venv/
 .env
-telegraf.conf
-secrtet
+secret
 chronograf_data/
 influxdb
+grafana/grafana.db
+grafana/alerting/1/__default__.tmpl
