@@ -40,10 +40,10 @@ def generate_self_signed_cert(domain):
         cert_pem = cert.public_bytes(serialization.Encoding.PEM)
 
         # Save private key and certificate to files
-        with open('ssl/certs/private_key.pem', 'wb') as f:
+        with open('./ssl/certs/private_key.pem', 'wb') as f:
             f.write(private_key_pem)
 
-        with open('ssl/certs/certificate.pem', 'wb') as f:
+        with open('./ssl/certs/certificate.pem', 'wb') as f:
             f.write(cert_pem)
 
         print("Successfully generated self-signed SSL certificate")
@@ -84,10 +84,24 @@ def generate_env_file(username,orginasation,bucket,grafana_domain,grafana_root_u
     print("Successfully generated .env file")
 
 if __name__ == "__main__":
+    # set grafana dir userid
     directory = "grafana"
     user = "472"
     group = "472"
     os.system("chown -R {0}:{1} {2}".format(user, group, directory))
+    # create ssl dir move to method for cleaner main
+    try:
+      directory_path = "ssl/certs"
+      os.makedirs(directory_path)
+      print(f"Directory '{directory_path}' created successfully.")
+    except FileExistsError:
+      print(f"Directory '{directory_path}' already exists.")
+    except OSError as e:
+      print(f"Failed to create directory '{directory_path}': {e}")
+
+
+
+
     grafana_domain = "thebigbytefive.africa"
     grafana_sub_domain = "narwal.thebigbytefive.africa"
     grafana_root_url = "http://narwal.thebigbytefive.africa:3000"
