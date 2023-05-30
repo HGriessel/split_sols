@@ -73,7 +73,6 @@ def generate_env_file(username,orginasation,bucket,grafana_domain,grafana_root_u
         "DOCKER_INFLUXDB_INIT_PASSWORD": f"{influx_admin_password}",
         "DOCKER_INFLUXDB_INIT_ORG": f"{orginasation}",
         "DOCKER_INFLUXDB_INIT_BUCKET": f"{bucket}",
-        "DOCKER_INFLUXDB_INIT_RETENTION": "1y",
         "DOCKER_INFLUXDB_INIT_ADMIN_TOKEN": f"{token}"
         
     }
