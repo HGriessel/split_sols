@@ -68,6 +68,15 @@ services:
       - influxdb
     restart: always
 
+  udpserver:
+    container_name: udpserver
+    build: rtt_collector/.
+    ports:
+      - 161:161
+    restart: always
+
+
+
   # kapacitor:
   #     image: kapacitor
   #     environment:
